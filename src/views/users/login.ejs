@@ -1,0 +1,18 @@
+<div class="entry-detail">
+  <% if (errors.length > 0) { %>
+	<div  class="error-message">
+		<% errors.forEach(error => { %>
+			<div>
+				<%= t(error) %>
+			</div>
+		<% }) %>
+	</div>
+  <% } %>
+
+  <form method="POST" action="/users/login">
+	<input type="text" name="username" placeholder="<%= t("username") %>" required>
+	<input type="password" name="password" placeholder="<%= t("password") %>" required>
+	<a href="/users/register"><%= t("register") %></a>
+	<button type="submit"><%= t("login") %></button>
+  </form>
+</div>

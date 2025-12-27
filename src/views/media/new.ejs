@@ -1,0 +1,24 @@
+<h2><%= t("new_media_entry") %></h2>
+<form method="POST" action="/media" id="media-form">
+  <input type="text" name="title" placeholder="<%= t("title") %>" required>
+  <div class="media-form-line">
+    <input type="number" name="rating" placeholder="<%= t("rating") %>">
+    <p> / </p>
+    <input type="number" name="rating_over" placeholder="<%= t("rating_over") %>" value="20">
+    <p> | </p>
+    <input type="number" name="clear_time" placeholder="<%= t("clear_time") %>"> <span style="margin-left: 5px;">h</span>
+  </div>
+  <textarea name="review" rows="10" placeholder="<%= t("review") %>..."></textarea>
+
+  <label><%= t("select_tags") %>:</label>
+  <div class="tags-select" id="tags-select">
+    <% tags.forEach(tag => { %>
+      <label class="tag-checkbox" style="background-color:<%= tag.color %>">
+        <input type="checkbox" name="tags" value="<%= tag.id %>">
+        <%= tag.name %>
+      </label>
+    <% }) %>
+  </div>
+
+  <button type="submit"><%= t("save_entry") %></button>
+</form>

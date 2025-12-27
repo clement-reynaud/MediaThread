@@ -1,0 +1,39 @@
+<h2><%= t("new_tag") %></h2>
+
+<form>
+	<label><%= t("add_new_tag") %></label>
+	<div id="new-tag-form">
+		<input type="text" id="new-tag-name" placeholder="<%= t("tag_name") %>">
+		<input type="color" id="new-tag-color" value="#ffffff">
+		<button type="button" id="add-tag-btn"><%= t("add_tag") %></button>
+	</div>
+</form>
+
+
+<script>
+document.getElementById('add-tag-btn').addEventListener('click', async () => {
+  const nameInput = document.getElementById('new-tag-name');
+  const colorInput = document.getElementById('new-tag-color');
+  const name = nameInput.value.trim();
+  const color = colorInput.value;
+
+  if (!name) return alert('<%= t("errors.missing_tag_name") %>');
+
+  try {
+    const res = await fetch('/tags/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, color })
+    });
+    const data = await res.json();
+    if (res.ok) {
+		window.location.href = '/media';
+    } else {
+      alert(data.error || '<%= t("errors.creating_tag") %>');
+    }
+  } catch (err) {
+    alert('<%= t("errors.server_error") %>');
+    console.error(err);
+  }
+});
+</script>

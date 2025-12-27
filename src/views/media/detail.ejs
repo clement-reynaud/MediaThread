@@ -1,0 +1,59 @@
+<div class="entry-detail">
+
+  <h1><%= entry.title %></h1>
+  <small><%= entry.created_at.toLocaleString() %> | <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
+  <% if (entry.tags?.length) { %>
+    <div class="entry-tags">
+      <% entry.tags.forEach(tag => { %>
+        <span class="tag" style="background-color:<%= tag.color %>"><%= tag.name %></span>
+      <% }) %>
+    </div>
+  <% } %>
+  
+  <div style="display: flex; flex-direction: row; justify-content: center;">
+    <div class="stats-container" style=" margin: 20px;">
+        <!-- <% if (entry.tags?.length) { %>
+          <div class="stat-card">
+            <div class="stat-number"><%= entry.tags.length %></div>
+            <div class="stat-label">Tags</div>
+          </div>
+        <% } %> -->
+  
+        <% if (entry.rating && entry.rating_over) { %>
+          <div class="stat-card">
+            <div class="stat-number"><%= entry.rating %> / <%= entry.rating_over %></div>
+            <div class="stat-label"><%= t("rating") %></div>
+          </div>
+        <% } %>
+  
+        <% if (entry.clear_time) { %>
+          <div class="stat-card">
+            <div class="stat-number"><%= entry.clear_time %>h</div>
+            <div class="stat-label"><%= t("clear_time") %></div>
+          </div>
+        <% } %>
+    </div>
+  </div>
+
+  <div class="entry-review">
+    <h4> <%= t("review") %> :</h4><br>
+    <%= entry.review %>
+  </div>
+
+  <div class="entry-review comment-box">
+    <h4> <%= t("comments") %> :</h4><br>
+    <form method="POST" action="/media/<%= entry.id %>/comment" id="comment-form">
+      <% entry.comments.forEach(comment => { %> 
+        <div class="comment">
+          <p><%= comment.content %></p>
+          <small><%= comment.created_at.toLocaleString() %>| <%= t("by") %> <span style="color: <%= comment.userColor %>;"><%= comment.username %></span></small>
+        </div>
+      <% }) %>
+      <% if(userId) { %>
+        <hr>
+        <input type="text" name="comment" placeholder="<%= t("comment") %>" required>
+        <button type="submit"><%= t("send") %></button>
+      <% } %>
+    </form>
+  </div>
+</div>

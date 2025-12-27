@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= t("media_thread") %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div id="theme-toggle"></div>
+      <div id="fr-switch" onclick="window.location.href = '/lang/fr'">🇫🇷</div>
+      <div id="en-switch" onclick="window.location.href = '/lang/en'">🇬🇧</div>
+      <div class="main-row">
+        <div id="main-title"><%= t("media_thread") %></div>
+      </div>
+      <nav>
+        <a href="/media"><%= t("home") %></a>
+        <% if (userId && isAdmin) { %>
+          <a href="/media/new"><%= t("new_entry") %></a>
+          <a href="/tags/new"><%= t("new_tag") %></a>
+        <% } %>
+
+        <% if (userId) { %>
+          <a href="/users/logout"><%= t("logout") %></a>
+        <% } else { %>
+          <a href="/users/login"><%= t("login") %></a>
+        <% } %>
+      </nav>
+    </header>
+
+    <%- body %>
+  </div>
+  <script src="/js/script.js"></script>
+</body>
+</html>

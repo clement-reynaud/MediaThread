@@ -1,0 +1,49 @@
+<h2 style="margin-bottom: 20px;"><%= t("media_entries") %></h2>
+<ul class="media-list">
+  <% entries.forEach(entry => { %>
+    <%
+      const percent = entry.rating_over
+        ? Math.min(100, Math.max(0, (entry.rating / entry.rating_over) * 100))
+        : 0;
+    %>
+
+    <li onclick="window.location.href = '/media/<%= entry.id %>'" style="cursor: pointer;" class="display-grid" rating="<%= percent %>" clear_time="<%= entry.clear_time %>">
+      <div>
+        <a href="/media/<%= entry.id %>"><%= entry.title %></a>
+        <small><%= entry.created_at.toLocaleString() %>| <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
+  
+        <% if (entry.tags?.length) { %>
+          <div class="entry-tags">
+            <% entry.tags.forEach(tag => { %>
+              <span class="tag" style="background-color:<%= tag.color %>"><%= tag.name %></span>
+              <% }) %>
+            </div>
+        <% } %>
+      </div>
+      <div class="hide-on-mobile">
+          <div class="stats-container">
+            <!-- <% if (entry.tags?.length) { %>
+              <div class="stat-card">
+                <div class="stat-number"><%= entry.tags.length %></div>
+                <div class="stat-label">Tags</div>
+              </div>
+            <% } %> -->
+
+            <% if (entry.rating && entry.rating_over) { %>
+              <div class="stat-card">
+                <div class="stat-number"><%= entry.rating %> / <%= entry.rating_over %></div>
+                <div class="stat-label"><%= t("rating") %></div>
+              </div>
+            <% } %>
+
+            <% if (entry.clear_time) { %>
+              <div class="stat-card">
+                <div class="stat-number"><%= entry.clear_time %>h</div>
+                <div class="stat-label"><%= t("clear_time") %></div>
+              </div>
+            <% } %>
+        </div>
+      </div>
+    </li>
+  <% }) %>
+</ul>
