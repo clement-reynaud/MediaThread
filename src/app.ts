@@ -6,9 +6,22 @@ import sessionStore from "./db/session";
 import i18nMiddleware from "./middleware/i18n";
 import { Server } from "socket.io";
 import http from "http";
+import https from "https";
+import fs from "fs";
 
 const app = express();
-const server = http.createServer(app);
+let server = null
+if (process.env.NODE_ENV === 'production') {
+  const serverOptions = {
+    key: fs.readFileSync('private.key.pem'),
+    cert: fs.readFileSync('domain.cert.pem'),
+  }
+  
+  server = https.createServer(serverOptions,app);
+}
+else {
+  server = http.createServer(app);
+}
 app.use(i18nMiddleware);
 
 
