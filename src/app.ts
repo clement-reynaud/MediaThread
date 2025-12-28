@@ -4,9 +4,20 @@ import expressLayouts from "express-ejs-layouts";
 import session from "express-session";
 import sessionStore from "./db/session";
 import i18nMiddleware from "./middleware/i18n";
+import { Server } from "socket.io";
+import http from "http";
 
 const app = express();
+const server = http.createServer(app);
 app.use(i18nMiddleware);
+
+
+const io = new Server(server, {
+  cors: {
+    origin: "*", // adjust for production
+  }
+});
+
 
 app.use((req, res, next) => {
   res.locals.t = req.t;
@@ -64,6 +75,10 @@ app.use("/tags", tagRoutes);
 import userRoutes from "./routes/user.routes";
 app.use("/users", userRoutes);
 
+io.on("connection", (socket) => {
+  socket.on("comment", (entryId) => {
+    io.emit("comment", entryId); // broadcast to everyone
+  });
+});
 
-
-export default app;
+export default server;

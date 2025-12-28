@@ -436,3 +436,24 @@ ul.media-list li small {
   border-radius: 12px;
   box-shadow: 0 8px 20px var(--card-shadow); 
 }
+
+/* SHRINK ANIMATION */
+@keyframes shrink {
+  0% {
+    width: 20px;
+    height: 20px;
+  }
+  50% {
+    width: 22px;
+    height: 22px;
+  }
+  100% {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.notify{
+  animation: shrink 1s ease-in-out infinite;
+  height: 20px; width: 20px; background-color: red; border-radius: 100%;
+}
