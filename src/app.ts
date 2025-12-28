@@ -10,7 +10,7 @@ import https from "https";
 import fs from "fs";
 
 const app = express();
-let server = null
+let server: http.Server | https.Server;
 if (process.env.NODE_ENV === 'production') {
   const serverOptions = {
     key: fs.readFileSync('private.key.pem'),
