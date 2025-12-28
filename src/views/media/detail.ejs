@@ -7,7 +7,7 @@
 
   <div>
     <h1><%= entry.title %></h1>
-    <small><%= entry.created_at.toLocaleString() %> | <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
+    <small><%= entry.created_at.toLocaleString("fr-FR") %> | <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
     <% if (entry.tags?.length) { %>
       <div class="entry-tags">
         <% entry.tags.forEach(tag => { %>
@@ -44,7 +44,7 @@
 
   <div class="entry-review">
     <h4> <%= t("review") %> :</h4><br>
-    <%= entry.review %>
+    <%- entry.review.replace(/\n/g, "<br>") %>
   </div>
 
   <div class="entry-review comment-box">
@@ -56,7 +56,7 @@
     <% entry.comments.forEach(comment => { %> 
       <div class="comment">
         <p><%= comment.content %></p>
-        <small><%= comment.created_at.toLocaleString() %>| <%= t("by") %> <span style="color: <%= comment.userColor %>;"><%= comment.username %></span></small>
+        <small><%= comment.created_at.toLocaleString("fr-FR") %>| <%= t("by") %> <span style="color: <%= comment.userColor %>;"><%= comment.username %></span></small>
       </div>
       <% }) %>
       <form method="POST" action="/media/<%= entry.id %>/comment" id="comment-form">

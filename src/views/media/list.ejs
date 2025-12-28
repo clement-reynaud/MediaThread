@@ -10,7 +10,7 @@
     <li onclick="window.location.href = '/media/<%= entry.id %>'" style="cursor: pointer;" class="display-grid" rating="<%= percent %>" clear_time="<%= entry.clear_time %>">
       <div>
         <a href="/media/<%= entry.id %>"><%= entry.title %></a>
-        <small><%= entry.created_at.toLocaleString() %>| <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
+        <small><%= entry.created_at.toLocaleString("fr-FR") %>| <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
   
         <% if (entry.tags?.length) { %>
           <div class="entry-tags">
