@@ -1,14 +1,19 @@
 <div class="entry-detail">
+  <div>
+    <img class="thumbnail" src="/<%= entry.image_path %>" alt="">
+  </div>
 
-  <h1><%= entry.title %></h1>
-  <small><%= entry.created_at.toLocaleString() %> | <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
-  <% if (entry.tags?.length) { %>
-    <div class="entry-tags">
-      <% entry.tags.forEach(tag => { %>
-        <span class="tag" style="background-color:<%= tag.color %>"><%= tag.name %></span>
-      <% }) %>
-    </div>
-  <% } %>
+  <div>
+    <h1><%= entry.title %></h1>
+    <small><%= entry.created_at.toLocaleString() %> | <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
+    <% if (entry.tags?.length) { %>
+      <div class="entry-tags">
+        <% entry.tags.forEach(tag => { %>
+          <span class="tag" style="background-color:<%= tag.color %>"><%= tag.name %></span>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
   
   <div style="display: flex; flex-direction: row; justify-content: center;">
     <div class="stats-container" style=" margin: 20px;">

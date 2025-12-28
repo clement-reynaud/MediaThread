@@ -27,7 +27,15 @@ export async function createEntry(req: Request, res: Response) {
     return res.status(400).send("Title is required");
   }
   
-  const entryId = await mediaService.create(title, review, rating, rating_over, clear_time ,req.session.userId ?? 0);
+
+  const imagePath = req.file
+    ? `uploads/media/${req.file.filename}`
+    : null;
+
+  let ratingNumer = Number(rating);
+  let ratingOver = Number(rating_over);
+
+  const entryId = await mediaService.create(title, review, ratingNumer, ratingOver, clear_time ,req.session.userId ?? 0, imagePath);
   
   if (tagIds) {
     const tagIdsArray = Array.isArray(tagIds) ? tagIds.map(Number) : [Number(tagIds)];

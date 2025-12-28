@@ -15,6 +15,7 @@ export interface MediaEntry {
   clear_time: number;
   user: User;
   comments?: Comment[];
+  image_path?: string;
 }
 
 export interface Comment {
@@ -25,10 +26,10 @@ export interface Comment {
   userColor: string;
 }
 
-export async function create(title: string, review: string, rating: number, rating_over: number, clear_time: number, user: number,): Promise<number> {
+export async function create(title: string, review: string, rating: number, rating_over: number, clear_time: number, user: number, image_path: string | null): Promise<number> {
   const [result] = await pool.query(
-    "INSERT INTO media_entries (title, review, rating, rating_over, clear_time, user) VALUES (?, ?, ?, ?, ?, ?)",
-    [title, review, rating, rating_over, clear_time, user]
+    "INSERT INTO media_entries (title, review, rating, rating_over, clear_time, user, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [title, review, rating, rating_over, clear_time, user, image_path]
   );
   const insertResult = result as any;
   return insertResult.insertId;
@@ -52,7 +53,8 @@ export async function getAll(limit: number | null = null): Promise<MediaEntry[]>
       u.created_at AS user_created_at,
       u.is_admin,
       -- aggregate tags
-      GROUP_CONCAT(CONCAT(t.id, ':', t.name, ':', t.color) SEPARATOR ',') AS tags
+      GROUP_CONCAT(CONCAT(t.id, ':', t.name, ':', t.color) SEPARATOR ',') AS tags,
+      m.image_path
     FROM media_entries m
     JOIN users u ON m.user = u.id
     LEFT JOIN entry_tags et ON m.id = et.entry_id
@@ -88,6 +90,7 @@ export async function getAll(limit: number | null = null): Promise<MediaEntry[]>
         is_admin: !!row.is_admin,
       },
       tags: parsedTags,
+      image_path: row.image_path
     };
   });
 }
@@ -109,7 +112,8 @@ export async function getById(id: number): Promise<MediaEntry | null> {
       u.password_hash,
       u.created_at AS user_created_at,
       u.is_admin,
-      GROUP_CONCAT(CONCAT(t.id, ':', t.name, ':', t.color) SEPARATOR ',') AS tags
+      GROUP_CONCAT(CONCAT(t.id, ':', t.name, ':', t.color) SEPARATOR ',') AS tags,
+      m.image_path
     FROM media_entries m
     JOIN users u ON m.user = u.id
     LEFT JOIN entry_tags et ON m.id = et.entry_id
@@ -172,6 +176,7 @@ export async function getById(id: number): Promise<MediaEntry | null> {
     },
     comments: parsedComments,
     tags: parsedTags,
+    image_path: row.image_path
   };
 }
 

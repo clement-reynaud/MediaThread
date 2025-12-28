@@ -1,6 +1,10 @@
 <h2><%= t("new_media_entry") %></h2>
-<form method="POST" action="/media" id="media-form">
+<form method="POST" action="/media" id="media-form" enctype="multipart/form-data">
   <input type="text" name="title" placeholder="<%= t("title") %>" required>
+  <div style="display: flex;">
+    <label for="image" style="margin-right: 10px;"><%= t("image") %> :</label>
+    <input type="file" name="image" accept="image/*">
+  </div>
   <div class="media-form-line">
     <input type="number" name="rating" placeholder="<%= t("rating") %>">
     <p> / </p>
@@ -9,6 +13,7 @@
     <input type="number" name="clear_time" placeholder="<%= t("clear_time") %>"> <span style="margin-left: 5px;">h</span>
   </div>
   <textarea name="review" rows="10" placeholder="<%= t("review") %>..."></textarea>
+
 
   <label><%= t("select_tags") %>:</label>
   <div class="tags-select" id="tags-select">

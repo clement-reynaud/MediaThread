@@ -30,6 +30,7 @@
   "add_new_tag": "Ajouter un nouveau tag",
   "title": "Titre",
   "back_to_list": "Retour à la liste",
+  "image": "Image",
   "errors": {
     "missing_tag_name": "Le nom du tag est requis",
     "creating_tag": "Échec de la création du tag",

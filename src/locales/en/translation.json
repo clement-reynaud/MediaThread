@@ -30,6 +30,7 @@
 	"add_new_tag": "Add New Tag",
 	"title": "Title",
 	"back_to_list": "Back to List",
+	"image": "Image",
 	"errors":{
 		"missing_tag_name": "Tag name is required",
 		"creating_tag" : "Failed to create tag",

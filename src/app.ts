@@ -50,7 +50,7 @@ app.set("layout", "layout"); // points to views/layout.ejs
 
 app.get("/", (req, res) => res.redirect("/media"));
 
-app.get("/lang/:lng/:current", (req, res) => {
+app.get("/lang/:lng", (req, res) => {
   res.cookie("i18next", req.params.lng);
   res.redirect("/media");
 });
