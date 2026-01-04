@@ -6,7 +6,7 @@
   </div>
 
   <div>
-    <h1><%= entry.title %></h1>
+    <h1 style="max-width: 80%;"><%= entry.title %></h1>
     <small><%= entry.created_at.toLocaleString("fr-FR") %> | <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
     <% if (entry.tags?.length) { %>
       <div class="entry-tags">

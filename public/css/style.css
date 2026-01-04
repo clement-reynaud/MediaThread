@@ -385,6 +385,20 @@ ul.media-list li small {
   grid-area: 1 / 3 / 2 / 4;
 }
 
+@media (max-width: 767px) {
+  .display-grid{
+  display: grid; 
+  grid-template-columns: 1fr 0.3fr;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px; 
+  }
+
+  .display-grid img{
+    grid-area: 1 / 2 / 2 / 4;
+  }
+}
+
 .hide-on-mobile {
   display: block; /* default for desktop/tablet */
 }

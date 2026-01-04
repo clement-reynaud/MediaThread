@@ -21,14 +21,7 @@
         <% } %>
       </div>
       <div class="hide-on-mobile">
-          <div class="stats-container">
-            <!-- <% if (entry.tags?.length) { %>
-              <div class="stat-card">
-                <div class="stat-number"><%= entry.tags.length %></div>
-                <div class="stat-label">Tags</div>
-              </div>
-            <% } %> -->
-
+          <div class="stats-container" style=" margin-left: 20px;">
             <% if (entry.rating && entry.rating_over) { %>
               <div class="stat-card">
                 <div class="stat-number"><%= entry.rating %> / <%= entry.rating_over %></div>
