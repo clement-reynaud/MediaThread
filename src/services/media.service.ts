@@ -16,6 +16,7 @@ export interface MediaEntry {
   user: User;
   comments?: Comment[];
   image_path?: string;
+  is_draft?: boolean;
 }
 
 export interface Comment {
@@ -26,17 +27,32 @@ export interface Comment {
   userColor: string;
 }
 
-export async function create(title: string, review: string, rating: number, rating_over: number, clear_time: number, user: number, image_path: string | null): Promise<number> {
+export async function create(title: string, review: string, rating: number, rating_over: number, clear_time: number, user: number, image_path: string | null, is_draft: boolean): Promise<number> {
   const [result] = await pool.query(
-    "INSERT INTO media_entries (title, review, rating, rating_over, clear_time, user, image_path) VALUES (?, ?, ?, ?, ?, ?, ?)",
-    [title, review, rating, rating_over, clear_time, user, image_path]
+    "INSERT INTO media_entries (title, review, rating, rating_over, clear_time, user, image_path, is_draft) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+    [title, review, rating, rating_over, clear_time, user, image_path, is_draft ? 1 : 0]
   );
   const insertResult = result as any;
   return insertResult.insertId;
 }
 
+export enum ShowMode {
+  ALL = "all",
+  DRAFT = "draft",
+  PUBLISHED = "published"
+}
 
-export async function getAll(limit: number | null = null): Promise<MediaEntry[]> {
+export async function getAll(limit: number | null = null, draft: ShowMode = ShowMode.ALL): Promise<MediaEntry[]> {
+
+  let showModeSql: string = "";
+
+  if(ShowMode.DRAFT === draft) {
+    showModeSql = " AND m.is_draft = 1";
+  }
+  else if(ShowMode.PUBLISHED === draft) {
+    showModeSql = " AND m.is_draft = 0";
+  }
+
   const [rows] = await pool.query(
     `
     SELECT
@@ -47,6 +63,8 @@ export async function getAll(limit: number | null = null): Promise<MediaEntry[]>
       m.rating,
       m.rating_over,
       m.clear_time,
+      m.is_draft,
+      -- user
       u.id AS user_id,
       u.username,
       u.password_hash,
@@ -59,6 +77,7 @@ export async function getAll(limit: number | null = null): Promise<MediaEntry[]>
     JOIN users u ON m.user = u.id
     LEFT JOIN entry_tags et ON m.id = et.entry_id
     LEFT JOIN tags t ON et.tag_id = t.id
+    WHERE 1 = 1 ${showModeSql}
     GROUP BY m.id
     ORDER BY m.created_at DESC
     ${limit ? `LIMIT ${limit}` : ''}
@@ -82,6 +101,7 @@ export async function getAll(limit: number | null = null): Promise<MediaEntry[]>
       rating: row.rating,
       rating_over: row.rating_over,
       clear_time: row.clear_time,
+      is_draft: row.is_draft,
       user: {
         id: row.user_id,
         username: row.username,
@@ -107,6 +127,7 @@ export async function getById(id: number): Promise<MediaEntry | null> {
       m.rating,
       m.rating_over,
       m.clear_time,
+      m.is_draft,
       u.id AS user_id,
       u.username,
       u.password_hash,
@@ -167,6 +188,7 @@ export async function getById(id: number): Promise<MediaEntry | null> {
     rating: row.rating,
     rating_over: row.rating_over,
     clear_time: row.clear_time,
+    is_draft: row.is_draft,
     user: {
       id: row.user_id,
       username: row.username,
@@ -185,4 +207,64 @@ export async function addComment(entry_id: number, content: string, user_id: num
     "INSERT INTO entry_comments (entry_id, user_id, content) VALUES (?, ?, ?)",
     [entry_id, user_id, content]
   );
+}
+
+
+export async function update(
+  id: number,
+  data: {
+    title?: string;
+    review?: string | null;
+    rating?: number;
+    rating_over?: number;
+    clear_time?: number;
+    is_draft?: boolean;
+  }
+): Promise<boolean> {
+  const fields: string[] = [];
+  const values: any[] = [];
+
+  if (data.title !== undefined) {
+    fields.push("title = ?");
+    values.push(data.title);
+  }
+
+  if (data.review !== undefined) {
+    fields.push("review = ?");
+    values.push(data.review);
+  }
+
+  if (data.rating !== undefined) {
+    fields.push("rating = ?");
+    values.push(data.rating);
+  }
+
+  if (data.rating_over !== undefined) {
+    fields.push("rating_over = ?");
+    values.push(data.rating_over);
+  }
+
+  if (data.clear_time !== undefined) {
+    fields.push("clear_time = ?");
+    values.push(data.clear_time);
+  }
+
+  if (data.is_draft !== undefined) {
+    fields.push("is_draft = ?");
+    values.push(data.is_draft ? 1 : 0);
+  }
+
+  if (fields.length === 0) {
+    return false; // rien à mettre à jour
+  }
+
+  values.push(id);
+
+  const [result] = await pool.query(
+    `UPDATE media_entries SET ${fields.join(", ")} WHERE id = ?`,
+    values
+  );
+
+  const updateResult = result as any;
+  return updateResult.affectedRows > 0;
 }

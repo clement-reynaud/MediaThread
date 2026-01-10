@@ -40,5 +40,10 @@
 		"username_taken" : "Username is already taken",
 		"password_mismatch" : "Passwords do not match",
 		"unknown" : "An unexpected error occurred"
-	}
+	},
+	"draft": "Draft",
+	"drafts": "Drafts",
+	"edit" : "Edit",
+	"update_entry" : "Update Entry",
+	"is_draft" : "Is Draft?"
 }

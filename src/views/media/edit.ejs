@@ -1,0 +1,43 @@
+<h2>
+	<%= t("edit") %>
+</h2>
+
+<form method="post" action="/media/<%= entry.id %>" id="media-form">
+	<input type="hidden" name="id" value="<%= entry.id %>">
+
+	<input type="text" name="title" placeholder="<%= t(" title") %>" required value="<%= entry.title %>">
+
+	<div class="media-form-line">
+		<input type="number" name="rating" placeholder="<%= t(" rating") %>" value="<%= entry.rating %>">
+		<p> / </p>
+		<input type="number" name="rating_over" placeholder="<%= t(" rating_over") %>" value="<%= entry.rating_over %>">
+		<p> | </p>
+		<input type="number" name="clear_time" placeholder="<%= t(" clear_time") %>" value="<%= entry.clear_time %>">
+		<span style="margin-left: 5px;">h</span>
+	</div>
+
+	<textarea name="review" rows="10" placeholder="<%= t(" review") %>..."><%= entry.review %></textarea>
+
+	<label>
+		<%= t("select_tags") %>:
+	</label>
+	<div class="tags-select" id="tags-select">
+		<% tags.forEach(tag=> {
+			const checked = entry.tags.some(t => t.id === tag.id);
+			%>
+			<label class="tag-checkbox" style="background-color:<%= tag.color %>">
+				<input type="checkbox" name="tags" value="<%= tag.id %>" <%=checked ? 'checked' : '' %>>
+				<%= tag.name %>
+			</label>
+			<% }) %>
+	</div>
+
+	<div>
+		<label for="is_draft"><%= t("is_draft") %> :</label>
+		<input type="checkbox" name="is_draft" id="is_draft" <%= entry.is_draft ? 'checked' : '' %>>
+	</div>
+
+	<button type="submit">
+		<%= t("update_entry") %>
+	</button>
+</form>

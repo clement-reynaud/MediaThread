@@ -40,5 +40,10 @@
     "username_taken": "Ce nom d'utilisateur est déjà utilisé",
     "password_mismatch": "Les mots de passe ne correspondent pas",
     "unknown": "Une erreur inattendue est survenue"
-  }
+  },
+  "draft": "Brouillon",
+	"drafts": "Brouillons",
+	"edit" : "Modifier",
+	"update_entry" : "Mettre à jour l'entrée",
+  "is_draft": "Est un brouillon ?"
 }

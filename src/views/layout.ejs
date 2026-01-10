@@ -18,6 +18,7 @@
       <nav>
         <a href="/media"><%= t("home") %></a>
         <% if (userId && isAdmin) { %>
+          <a href="/media/drafts"><%= t("drafts") %></a>
           <a href="/media/new"><%= t("new_entry") %></a>
           <a href="/tags/new"><%= t("new_tag") %></a>
         <% } %>

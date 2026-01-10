@@ -1,11 +1,12 @@
 <input type="hidden" id="entryId" value="<%= entry.id %>">
 
-<div class="entry-detail">
+<div class="entry-detail" style="<%= entry.is_draft ? "outline: 5px dotted var(--input-border);" : ""%>">
   <div>
     <img class="thumbnail" src="/<%= entry.image_path %>" alt="">
   </div>
 
   <div>
+    <div style="max-width: 10%; font-style: italic;"><%= entry.is_draft ? "[Brouillon]" : "" %></div>
     <h1 style="max-width: 80%;"><%= entry.title %></h1>
     <small><%= entry.created_at.toLocaleString("fr-FR") %> | <%= t("by") %> <span style="color: blue;"><%= entry.user.username %></span></small>
     <% if (entry.tags?.length) { %>
@@ -56,7 +57,7 @@
     <% entry.comments.forEach(comment => { %> 
       <div class="comment">
         <p><%= comment.content %></p>
-        <small><%= comment.created_at.toLocaleString("fr-FR") %>| <%= t("by") %> <span style="color: <%= comment.userColor %>;"><%= comment.username %></span></small>
+        <small><%= comment.created_at.toLocaleString("fr-FR") %> | <%= t("by") %> <span style="color: <%= comment.userColor %>;"><%= comment.username %></span></small>
       </div>
       <% }) %>
       <form method="POST" action="/media/<%= entry.id %>/comment" id="comment-form">
@@ -66,6 +67,11 @@
           <button type="submit"><%= t("send") %></button>
         <% } %>
     </form>
+    <% if(isAdmin) { %>
+      <div>
+        <button style="width: 100%; margin-top: 20px;" onclick='location.href="/media/<%= entry.id %>/edit"'><%= t("edit_media_entry") %></button>
+      </div>
+    <% } %>
   </div>
 
   <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
